@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+
+<body>
+    <h1>Todo List</h1>
+    <ul id="todo-list">
+        <li id="task1">Task 1 <button onclick="editTask('task1')">Edit</button> <button
+                onclick="deleteTask('task1')">Delete</button></li>
+        <li id="task2">Task 2 <button onclick="editTask('task2')">Edit</button> <button
+                onclick="deleteTask('task2')">Delete</button></li>
+        <li id="task3">Task 3 <button onclick="editTask('task3')">Edit</button> <button
+                onclick="deleteTask('task3')">Delete</button></li>
+    </ul>
+    <input type="text" id="new-task-input">
+    <button id="add-task-button">Add Task</button>
+
+    <script>
+        function editTask(taskId) {
+            var taskElement = document.getElementById(taskId);
+            var currentText = taskElement.childNodes[0].textContent.trim(); // Get task text
+            var newText = prompt("Enter new text for the task:", currentText);
+            if (newText !== null) {
+                taskElement.childNodes[0].textContent = newText; // Update task text
+            }
+        }
+
+        function deleteTask(taskId) {
+            var taskElement = document.getElementById(taskId);
+            var confirmation = confirm("Are you sure you want to delete this task?");
+            if (confirmation) {
+                taskElement.remove();
+            }
+        }
+
+        document.getElementById("add-task-button").addEventListener("click", function () {
+            var newTaskInput = document.getElementById("new-task-input");
+            var taskText = newTaskInput.value.trim();
+            if (taskText !== "") {
+                var newTaskId = "task" + (document.querySelectorAll("#todo-list li").length + 1);
+                var newTask = document.createElement("li");
+                newTask.id = newTaskId;
+                newTask.textContent = taskText + " "; // Set task text
+                var editButton = document.createElement("button");
+                editButton.textContent = "Edit";
+                editButton.onclick = function () {
+                    editTask(newTaskId);
+                };
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = function () {
+                    deleteTask(newTaskId);
+                };
+                newTask.appendChild(editButton); // Append edit button
+                newTask.appendChild(deleteButton); // Append delete button
+                document.getElementById("todo-list").appendChild(newTask);
+                newTaskInput.value = "";
+            } else {
+                alert("Please enter a task.");
+            }
+        });
+    </script>
+</body>
+
+</html>
